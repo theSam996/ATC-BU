@@ -1,0 +1,121 @@
+/* =========================================
+   STILL ALIVE! — Event Landing Page Styles
+   Theme: Red & Black CRT Glitch Audio-Reactive
+   ========================================= */
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --red-primary: #e53935;
+  --red-deep: #b71c1c;
+  --red-glow: #ff1744;
+  --red-hot: #ff5252;
+  --black: #000000;
+  --black-card: #0c0809;
+  --white: #ffffff;
+  --white-dim: rgba(255, 255, 255, 0.7);
+  --font-display: 'Bebas Neue', Impact, sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  background-color: #000000;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #000000;
+  color: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-root {
+  position: relative;
+  width: 100%;
+  background: #000000;
+  min-height: 100vh;
+}
+
+/* ---- Film Grain Overlay ---- */
+.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: screen;
+}
+
+/* ---- CRT GLITCH HERO SECTION ---- */
+.hero-crt-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 560px;
+  background: #000000;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crt-hero-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crt-hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---- Middle Down PulseHeart Like Button ---- */
+.crt-heart-wrapper {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  filter: drop-shadow(0 0 25px rgba(255, 23, 68, 0.35));
+  transition: transform 0.2s ease;
+}
+
+.crt-heart-wrapper:hover {
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .crt-heart-wrapper {
+    bottom: 2.5rem;
+  }
+}
