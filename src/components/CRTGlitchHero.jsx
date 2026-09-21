@@ -1,8 +1,10 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import PulseHeart from './PulseHeart';
-
-const STORAGE_KEY = 'still_alive_likes_count';
-const LIKED_KEY = 'still_alive_user_liked';
+import {
+  fetchGlobalLikes,
+  updateGlobalLikes,
+  getStoredLikedState
+} from '../utils/likesService';
 
 export default function CRTGlitchHero({ onAudioStateChange }) {
   const canvasRef = useRef(null);
@@ -10,38 +12,29 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
   const animFrameRef = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(getStoredLikedState);
 
-  // Initialize count and liked state from persistent storage
-  const [likeCount, setLikeCount] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved !== null ? Math.max(0, parseInt(saved, 10)) : 0;
-    } catch (e) {
-      return 0;
-    }
-  });
-
-  const [isLiked, setIsLiked] = useState(() => {
-    try {
-      return localStorage.getItem(LIKED_KEY) === 'true';
-    } catch (e) {
-      return false;
-    }
-  });
-
-  // Sync like count across tabs in real-time
+  // Fetch initial global live like count from cloud and poll periodically
   useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === STORAGE_KEY && e.newValue !== null) {
-        setLikeCount(Math.max(0, parseInt(e.newValue, 10)));
-      }
-      if (e.key === LIKED_KEY) {
-        setIsLiked(e.newValue === 'true');
+    let isMounted = true;
+
+    const loadGlobalLikes = async () => {
+      const count = await fetchGlobalLikes();
+      if (isMounted && typeof count === 'number') {
+        setLikeCount(count);
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    loadGlobalLikes();
+
+    // Poll every 8 seconds so other users' clicks reflect in real time
+    const interval = setInterval(loadGlobalLikes, 8000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   // Beat & Energy State
@@ -100,6 +93,19 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
         cancelAnimationFrame(animFrameRef.current);
       }
     };
+  }, [handlePlayAudio]);
+
+  // Handle Like Button Click & Global Cloud Update
+  const handleLikeChange = useCallback(async (nextLiked, nextCount) => {
+    setIsLiked(nextLiked);
+    setLikeCount(nextCount);
+    handlePlayAudio();
+
+    // Save to global cloud backend
+    const updatedCount = await updateGlobalLikes(nextLiked, nextCount);
+    if (typeof updatedCount === 'number') {
+      setLikeCount(updatedCount);
+    }
   }, [handlePlayAudio]);
 
   // CRT Glitch Canvas Render Loop
@@ -381,21 +387,13 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
       {/* Canvas for the CRT Glitch Visualizer */}
       <canvas ref={canvasRef} className="crt-hero-canvas" />
 
-      {/* Middle Down PulseHeart Like Button with Persistent Count */}
+      {/* Middle Down PulseHeart Like Button with Live Cloud Sync */}
       <div className="crt-heart-wrapper">
         <PulseHeart
           count={likeCount}
           liked={isLiked}
           defaultLiked={false}
-          onChange={(liked, newCount) => {
-            setIsLiked(liked);
-            setLikeCount(newCount);
-            try {
-              localStorage.setItem(STORAGE_KEY, String(newCount));
-              localStorage.setItem(LIKED_KEY, String(liked));
-            } catch (e) {}
-            handlePlayAudio();
-          }}
+          onChange={handleLikeChange}
           showCount
           icon="heart"
           idleOutline
