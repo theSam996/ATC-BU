@@ -1,0 +1,454 @@
+/* ==========================================================================
+   Lanyard ID Card Styles — "Still Alive" Pass with Slogan
+   Optimized for Desktop and Mobile Phone Screens
+   ========================================================================== */
+
+.id-card-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at center 30%, #16161c 0%, #0c0c0e 65%, #050507 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1rem 4rem 1rem;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.id-card-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  max-width: 540px;
+}
+
+/* ---- LANYARD & BADGE CONTAINER ---- */
+.lanyard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  perspective: 1200px;
+  touch-action: pan-y;
+}
+
+/* ---- LANYARD STRAP ASSEMBLY ---- */
+.lanyard-strap-assembly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  z-index: 10;
+}
+
+/* 1. Top Ribbon Strap */
+.lanyard-ribbon {
+  width: 54px;
+  height: 90px;
+  background: linear-gradient(90deg, #111114 0%, #202026 50%, #111114 100%);
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.ribbon-pattern {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100%;
+  transform: rotate(-90deg);
+  width: 180px;
+  position: absolute;
+}
+
+.ribbon-text {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+
+.ribbon-dot {
+  font-size: 0.5rem;
+  color: #ff1744;
+}
+
+/* 2. Plastic Quick Release Buckle */
+.lanyard-buckle {
+  width: 62px;
+  height: 38px;
+  background: #18181c;
+  border-radius: 6px;
+  border: 1.5px solid #0a0a0d;
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.1), 0 4px 8px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 6px;
+  position: relative;
+  z-index: 2;
+  margin-top: -2px;
+}
+
+.buckle-top-bar {
+  width: 44px;
+  height: 4px;
+  background: #09090b;
+  border-radius: 2px;
+}
+
+.buckle-body {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+}
+
+.buckle-prong {
+  width: 6px;
+  height: 14px;
+  background: #0d0d10;
+  border-radius: 2px;
+}
+
+.buckle-center-lock {
+  width: 14px;
+  height: 10px;
+  background: #111114;
+  border-radius: 3px;
+  border: 1px solid #282830;
+}
+
+.buckle-bottom-bar {
+  width: 44px;
+  height: 4px;
+  background: #09090b;
+  border-radius: 2px;
+}
+
+/* 3. Lower Webbing Strap Loop */
+.lanyard-lower-strap {
+  width: 50px;
+  height: 42px;
+  background: linear-gradient(90deg, #151518 0%, #24242c 50%, #151518 100%);
+  border-left: 1.5px solid #000;
+  border-right: 1.5px solid #000;
+  position: relative;
+  margin-top: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strap-stitch {
+  width: 38px;
+  height: 1px;
+  border-top: 1.5px dashed rgba(255, 255, 255, 0.2);
+}
+
+/* 4. Chrome Swivel Metal Hook */
+.lanyard-metal-hook {
+  width: 48px;
+  height: 64px;
+  margin-top: -6px;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
+}
+
+.clip-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ---- PHYSICAL ID BADGE CARD ---- */
+.id-badge-card {
+  position: relative;
+  width: min(340px, 88vw);
+  height: min(520px, 134vw);
+  background: #0a0a0c;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 60px -10px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(255, 23, 68, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  margin-top: -12px;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+  will-change: transform;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Top Badge Punch Hole */
+.badge-slot {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38px;
+  height: 9px;
+  background: #000000;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 12;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.slot-inner {
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 6px;
+}
+
+/* Specular Glare across card */
+.badge-glass-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.04) 35%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ---- TOP HALF (Black Background) ---- */
+.badge-top-half {
+  flex: 1.05;
+  background: #0d0d10;
+  padding: 1.8rem 1.4rem 1.2rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.badge-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+}
+
+.badge-logo-mark {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.logo-core {
+  font-weight: 900;
+}
+
+.logo-diamond {
+  color: #ff1744;
+  font-size: 0.8rem;
+  margin: 0 2px;
+}
+
+.logo-loc {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.logo-bracket {
+  color: #ff1744;
+  font-weight: 300;
+}
+
+.badge-event-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 1px;
+}
+
+.meta-line {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.meta-line.bold {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.meta-line.dim {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Attendee Name */
+.badge-attendee-block {
+  margin-top: auto;
+  padding-bottom: 0.2rem;
+}
+
+.badge-name-display {
+  cursor: pointer;
+}
+
+.attendee-first,
+.attendee-last {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.8rem, 7.5vw, 2.35rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.badge-name-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1.5px solid #ff1744;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  padding: 0.3rem 0.5rem;
+  text-transform: uppercase;
+  outline: none;
+}
+
+/* ---- BOTTOM HALF (Vivid Red Block) ---- */
+.badge-bottom-half {
+  flex: 1.15;
+  background: #ff1744;
+  padding: 1.3rem 1.4rem 1.3rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  color: #000000;
+  position: relative;
+}
+
+.slogan-container {
+  display: flex;
+  flex-direction: column;
+  line-height: 0.96;
+}
+
+.slogan-line {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 900;
+  font-size: clamp(1.85rem, 7.8vw, 2.45rem);
+  letter-spacing: -0.025em;
+  color: #000000;
+  text-transform: uppercase;
+  line-height: 0.94;
+}
+
+.badge-bottom-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1rem;
+}
+
+.footer-location {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.foot-bold {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.foot-dim {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.75);
+  letter-spacing: 0.02em;
+}
+
+.footer-sigil {
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+}
+
+/* ---- MOBILE PHONE OPTIMIZATION ---- */
+@media (max-width: 480px) {
+  .id-card-section {
+    padding: 3.5rem 0.75rem 3rem 0.75rem;
+    min-height: auto;
+  }
+
+  .id-card-heading {
+    font-size: 2.2rem;
+  }
+
+  .id-card-subheading {
+    font-size: 0.85rem;
+  }
+
+  .lanyard-ribbon {
+    height: 70px;
+    width: 48px;
+  }
+
+  .lanyard-buckle {
+    width: 56px;
+    height: 34px;
+  }
+
+  .id-badge-card {
+    width: 90vw;
+    max-width: 320px;
+    height: 480px;
+    border-radius: 16px;
+  }
+
+  .attendee-first,
+  .attendee-last {
+    font-size: 1.85rem;
+  }
+
+  .slogan-line {
+    font-size: 1.95rem;
+  }
+
+  .badge-top-half {
+    padding: 1.4rem 1.1rem 1rem 1.1rem;
+  }
+
+  .badge-bottom-half {
+    padding: 1.1rem 1.1rem 1.1rem 1.1rem;
+  }
+}

@@ -1,10 +1,4 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import PulseHeart from './PulseHeart';
-import {
-  fetchGlobalLikes,
-  updateGlobalLikes,
-  getStoredLikedState
-} from '../utils/likesService';
 
 export default function CRTGlitchHero({ onAudioStateChange }) {
   const canvasRef = useRef(null);
@@ -12,30 +6,6 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
   const animFrameRef = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [isLiked, setIsLiked] = useState(getStoredLikedState);
-
-  // Fetch initial global live like count from cloud and poll periodically
-  useEffect(() => {
-    let isMounted = true;
-
-    const loadGlobalLikes = async () => {
-      const count = await fetchGlobalLikes();
-      if (isMounted && typeof count === 'number') {
-        setLikeCount(count);
-      }
-    };
-
-    loadGlobalLikes();
-
-    // Poll every 8 seconds so other users' clicks reflect in real time
-    const interval = setInterval(loadGlobalLikes, 8000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, []);
 
   // Beat & Energy State
   const beatStateRef = useRef({
@@ -95,18 +65,6 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
     };
   }, [handlePlayAudio]);
 
-  // Handle Like Button Click & Global Cloud Update
-  const handleLikeChange = useCallback(async (nextLiked, nextCount) => {
-    setIsLiked(nextLiked);
-    setLikeCount(nextCount);
-    handlePlayAudio();
-
-    // Save to global cloud backend
-    const updatedCount = await updateGlobalLikes(nextLiked, nextCount);
-    if (typeof updatedCount === 'number') {
-      setLikeCount(updatedCount);
-    }
-  }, [handlePlayAudio]);
 
   // CRT Glitch Canvas Render Loop
   useEffect(() => {
@@ -294,18 +252,7 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
       ctx.fillStyle = beamGrad;
       ctx.fillRect(0, scanlineOffset - 60, width, 120);
 
-      // 10. Dynamic TV Static Grain Noise
-      const noiseImageData = ctx.createImageData(width, Math.min(height, 300));
-      const buffer = new Uint32Array(noiseImageData.data.buffer);
-      const grainDensity = 0.08 + bass * 0.15;
-      for (let i = 0; i < buffer.length; i++) {
-        if (Math.random() < grainDensity) {
-          const val = Math.random() > 0.85 ? 220 : 70;
-          const isRed = Math.random() > 0.6;
-          buffer[i] = isRed ? (200 << 24) | (0 << 16) | (20 << 8) | val : (180 << 24) | (val << 16) | (val << 8) | val;
-        }
-      }
-      ctx.putImageData(noiseImageData, 0, Math.floor(Math.random() * (height - 300)));
+
 
       // 11. CRT Vignette
       const crtVignette = ctx.createRadialGradient(
@@ -387,30 +334,7 @@ export default function CRTGlitchHero({ onAudioStateChange }) {
       {/* Canvas for the CRT Glitch Visualizer */}
       <canvas ref={canvasRef} className="crt-hero-canvas" />
 
-      {/* Middle Down PulseHeart Like Button with Live Cloud Sync */}
-      <div className="crt-heart-wrapper">
-        <PulseHeart
-          count={likeCount}
-          liked={isLiked}
-          defaultLiked={false}
-          onChange={handleLikeChange}
-          showCount
-          icon="heart"
-          idleOutline
-          size={38}
-          corner={32}
-          likedColor="#ff1744"
-          idleColor="#8b8b93"
-          pillColor="rgba(25, 25, 28, 0.9)"
-          textColor="#f5f5f5"
-          duration={560}
-          dotSize={0.3}
-          overshoot={1.7}
-          beat={3}
-          rollDuration={350}
-          disabled={false}
-        />
-      </div>
+
     </div>
   );
 }
