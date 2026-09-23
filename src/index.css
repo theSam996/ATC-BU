@@ -231,7 +231,7 @@ body {
 /* ---- Mobile Screen Adjustments ---- */
 @media (max-width: 480px) {
   .hero-cta-container {
-    bottom: 2rem;
+    bottom: clamp(4.5rem, 12vh, 6.2rem);
     width: 90%;
     gap: 0.75rem;
   }
@@ -246,6 +246,7 @@ body {
     max-width: 290px;
     line-height: 1.4;
   }
+
 
   .hero-scroll-prompt {
     bottom: clamp(4.5rem, 12vh, 6.2rem);
