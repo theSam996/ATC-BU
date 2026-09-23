@@ -79,19 +79,16 @@ export default function App() {
               </svg>
             </a>
 
-            <button
-              className="already-registered-link"
-              onClick={handleManualUnlock}
-            >
-              Already registered? Access your pass →
-            </button>
+            <p className="hero-cta-caption">
+              Register for event to generate customized, downloadable Still Alive ID Pass
+            </p>
           </div>
         ) : (
           <a href="#badge-section" className="hero-scroll-prompt">
             <span className="registered-badge-tag">✓ REGISTRATION CONFIRMED</span>
             <div className="scroll-hint-row">
-              <span>Scroll to Access Your Pass</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <span>Scroll to View Pass</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="6 9 12 15 18 9" />
               </svg>
             </div>
