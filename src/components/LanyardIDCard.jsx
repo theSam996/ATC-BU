@@ -87,10 +87,6 @@ export default function LanyardIDCard({ onResetRegistration }) {
   return (
     <section className="id-card-section" id="badge-section">
       <div className="id-card-header">
-        <div className="pass-status-pill">
-          <span className="status-dot" />
-          <span>REGISTRATION VERIFIED</span>
-        </div>
         <h2 className="id-card-heading">STILL ALIVE PASS</h2>
         <p className="id-card-subheading">
           Tap your name to customize. Download your high-resolution official pass below.
