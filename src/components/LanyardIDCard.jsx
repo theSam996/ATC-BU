@@ -1,13 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { motion, useSpring, useMotionValue, useTransform } from 'motion/react';
+import { toPng } from 'html-to-image';
 import './LanyardIDCard.css';
 
-export default function LanyardIDCard() {
+export default function LanyardIDCard({ onResetRegistration }) {
   const [attendeeName, setAttendeeName] = useState('SAMAR KUMAR');
-  const [passType, setPassType] = useState('ALL ACCESS');
   const [isEditing, setIsEditing] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(false);
 
-  const cardRef = useRef(null);
+  const containerRef = useRef(null);
+  const badgeCardRef = useRef(null);
 
   // Smooth motion physics for mouse/touch tilt
   const mouseX = useMotionValue(0);
@@ -19,8 +22,8 @@ export default function LanyardIDCard() {
   const swayX = useSpring(useTransform(mouseX, [-150, 150], [-10, 10]), springConfig);
 
   const handlePointerMove = (e) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     mouseX.set(e.clientX - centerX);
@@ -32,21 +35,65 @@ export default function LanyardIDCard() {
     mouseY.set(0);
   };
 
+  // Generate & Download high-resolution PNG of the pass
+  const handleDownloadPass = async () => {
+    if (!badgeCardRef.current || isDownloading) return;
+
+    try {
+      setIsDownloading(true);
+      setDownloadSuccess(false);
+
+      // Temporarily flatten for pristine render capture
+      rotateX.set(0);
+      rotateY.set(0);
+      swayX.set(0);
+
+      // Slight delay to allow spring settle
+      await new Promise((resolve) => setTimeout(resolve, 60));
+
+      const dataUrl = await toPng(badgeCardRef.current, {
+        quality: 1.0,
+        pixelRatio: 3,
+        cacheBust: true,
+        style: {
+          transform: 'none',
+          boxShadow: 'none'
+        }
+      });
+
+      const link = document.createElement('a');
+      const cleanName = attendeeName.trim().replace(/\s+/g, '_') || 'StillAlive';
+      link.download = `StillAlive_Pass_${cleanName}.png`;
+      link.href = dataUrl;
+      link.click();
+
+      setDownloadSuccess(true);
+      setTimeout(() => setDownloadSuccess(false), 3500);
+    } catch (err) {
+      console.error('Failed to download pass:', err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <section className="id-card-section" id="badge-section">
       <div className="id-card-header">
+        <div className="pass-status-pill">
+          <span className="status-dot" />
+          <span>REGISTRATION VERIFIED</span>
+        </div>
         <h2 className="id-card-heading">STILL ALIVE PASS</h2>
         <p className="id-card-subheading">
-          Tap name to customize your credential.
+          Your official event pass is ready. Tap your name to personalize, then download your credential.
         </p>
       </div>
 
       <div
         className="lanyard-container"
         onPointerMove={handlePointerMove}
-
         onPointerLeave={handlePointerLeave}
-        ref={cardRef}
+        ref={containerRef}
       >
         {/* ---- 1. LANYARD STRAP & HARDWARE ---- */}
         <div className="lanyard-strap-assembly">
@@ -148,6 +195,7 @@ export default function LanyardIDCard() {
 
         {/* ---- 2. PHYSICAL EVENT ID BADGE ---- */}
         <motion.div
+          ref={badgeCardRef}
           className="id-badge-card"
           style={{
             rotateX,
@@ -245,6 +293,50 @@ export default function LanyardIDCard() {
             </div>
           </div>
         </motion.div>
+
+        {/* ---- 3. BADGE ACTION CONTROLS ---- */}
+        <div className="badge-action-bar">
+          <button
+            className={`badge-download-btn ${downloadSuccess ? 'success' : ''}`}
+            onClick={handleDownloadPass}
+            disabled={isDownloading}
+          >
+            {isDownloading ? (
+              <>
+                <svg className="spinner-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <circle cx="12" cy="12" r="10" strokeDasharray="32" strokeLinecap="round" />
+                </svg>
+                <span>Generating HD Pass...</span>
+              </>
+            ) : downloadSuccess ? (
+              <>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>Pass Downloaded!</span>
+              </>
+            ) : (
+              <>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                <span>Download Pass (PNG)</span>
+              </>
+            )}
+          </button>
+
+          {onResetRegistration && (
+            <button
+              className="badge-change-btn"
+              onClick={onResetRegistration}
+              title="Change event registration"
+            >
+              Change Registration
+            </button>
+          )}
+        </div>
       </div>
     </section>
   );

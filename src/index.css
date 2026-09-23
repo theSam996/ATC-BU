@@ -94,7 +94,72 @@ body {
   display: block;
 }
 
-/* ---- Scroll Down Prompt in Hero ---- */
+/* ---- Hero Registration CTA & Controls ---- */
+.hero-cta-container {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  z-index: 25;
+  width: 90%;
+  max-width: 380px;
+}
+
+.hero-register-btn {
+  width: 100%;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #ff1744 0%, #d50000 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Inter', -apple-system, sans-serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  text-decoration: none !important;
+  padding: 1rem 2rem !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 
+    0 10px 30px -4px rgba(255, 23, 68, 0.5),
+    0 0 20px rgba(255, 23, 68, 0.3) !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  backdrop-filter: blur(8px);
+}
+
+.hero-register-btn:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  background: linear-gradient(135deg, #ff2e58 0%, #e60000 100%) !important;
+  box-shadow: 
+    0 16px 40px -4px rgba(255, 23, 68, 0.7),
+    0 0 30px rgba(255, 23, 68, 0.45) !important;
+}
+
+.already-registered-link {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.already-registered-link:hover {
+  color: #ff1744;
+}
+
+/* ---- Scroll Down Prompt in Hero (Registered State) ---- */
 .hero-scroll-prompt {
   position: absolute;
   bottom: 2rem;
@@ -103,19 +168,37 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.4rem;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  gap: 0.6rem;
   text-decoration: none;
-  z-index: 10;
-  transition: color 0.2s ease, transform 0.2s ease;
+  z-index: 25;
+  transition: transform 0.2s ease;
 }
 
-.hero-scroll-prompt:hover {
+.registered-badge-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #00e676;
+  background: rgba(0, 230, 118, 0.12);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
+
+.scroll-hint-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.hero-scroll-prompt:hover .scroll-hint-row {
   color: #ff1744;
-  transform: translateX(-50%) translateY(2px);
 }
 
 .hero-scroll-prompt svg {
@@ -133,6 +216,7 @@ body {
     transform: translateY(3px);
   }
 }
+
 
 
 
