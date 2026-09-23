@@ -17,9 +17,9 @@ export default function LanyardIDCard({ onResetRegistration }) {
   const mouseY = useMotionValue(0);
 
   const springConfig = { damping: 25, stiffness: 200, mass: 0.8 };
-  const rotateX = useSpring(useTransform(mouseY, [-150, 150], [14, -14]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-150, 150], [-14, 14]), springConfig);
-  const swayX = useSpring(useTransform(mouseX, [-150, 150], [-10, 10]), springConfig);
+  const rotateX = useSpring(useTransform(mouseY, [-150, 150], [12, -12]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-150, 150], [-12, 12]), springConfig);
+  const swayX = useSpring(useTransform(mouseX, [-150, 150], [-8, 8]), springConfig);
 
   const handlePointerMove = (e) => {
     if (!containerRef.current) return;
@@ -35,7 +35,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
     mouseY.set(0);
   };
 
-  // Generate & Download high-resolution PNG of the pass
+  // Generate & Download high-resolution PNG of the universal fixed pass
   const handleDownloadPass = async () => {
     if (!badgeCardRef.current || isDownloading) return;
 
@@ -43,21 +43,24 @@ export default function LanyardIDCard({ onResetRegistration }) {
       setIsDownloading(true);
       setDownloadSuccess(false);
 
-      // Temporarily flatten for pristine render capture
+      // Temporarily flatten for clean un-skewed capture
       rotateX.set(0);
       rotateY.set(0);
       swayX.set(0);
 
-      // Slight delay to allow spring settle
-      await new Promise((resolve) => setTimeout(resolve, 60));
+      await new Promise((resolve) => setTimeout(resolve, 80));
 
-      const dataUrl = await toPng(badgeCardRef.current, {
+      const node = badgeCardRef.current;
+      const dataUrl = await toPng(node, {
         quality: 1.0,
         pixelRatio: 3,
         cacheBust: true,
+        backgroundColor: 'transparent',
         style: {
           transform: 'none',
-          boxShadow: 'none'
+          boxShadow: 'none',
+          margin: '0',
+          animation: 'none'
         }
       });
 
@@ -76,6 +79,11 @@ export default function LanyardIDCard({ onResetRegistration }) {
     }
   };
 
+  // Format attendee name into structured lines (first & rest)
+  const nameParts = attendeeName.trim().split(/\s+/);
+  const firstName = nameParts[0] || 'STILL';
+  const restName = nameParts.slice(1).join(' ') || 'ALIVE';
+
   return (
     <section className="id-card-section" id="badge-section">
       <div className="id-card-header">
@@ -85,7 +93,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
         </div>
         <h2 className="id-card-heading">STILL ALIVE PASS</h2>
         <p className="id-card-subheading">
-          Your official event pass is ready. Tap your name to personalize, then download your credential.
+          Tap your name to customize. Download your high-resolution official pass below.
         </p>
       </div>
 
@@ -103,7 +111,6 @@ export default function LanyardIDCard({ onResetRegistration }) {
               <span className="ribbon-text">STILL ALIVE</span>
               <span className="ribbon-dot">◆</span>
               <span className="ribbon-text">CODE & COKE</span>
-              <span className="ribbon-dot">◆</span>
               <span className="ribbon-dot">◆</span>
             </div>
           </div>
@@ -134,10 +141,10 @@ export default function LanyardIDCard({ onResetRegistration }) {
             >
               <defs>
                 <linearGradient id="metalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#e6e6e6" />
+                  <stop offset="0%" stopColor="#f0f0f2" />
                   <stop offset="25%" stopColor="#ffffff" />
                   <stop offset="50%" stopColor="#8c8c94" />
-                  <stop offset="75%" stopColor="#d1d1d6" />
+                  <stop offset="75%" stopColor="#d8d8dc" />
                   <stop offset="100%" stopColor="#55555c" />
                 </linearGradient>
                 <filter id="metalShadow" x="-20%" y="-20%" width="140%" height="140%">
@@ -193,10 +200,10 @@ export default function LanyardIDCard({ onResetRegistration }) {
           </div>
         </div>
 
-        {/* ---- 2. PHYSICAL EVENT ID BADGE ---- */}
+        {/* ---- 2. UNIVERSAL FIXED-SIZE ID BADGE PASS ---- */}
         <motion.div
           ref={badgeCardRef}
-          className="id-badge-card"
+          className="id-badge-card universal-fixed-pass"
           style={{
             rotateX,
             rotateY,
@@ -212,7 +219,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
           {/* Specular Light Sheen Overlay */}
           <div className="badge-glass-glare" />
 
-          {/* TOP HALF: Black Background */}
+          {/* TOP HALF: Black Section */}
           <div className="badge-top-half">
             <div className="badge-top-row">
               {/* Event Badge Icon */}
@@ -222,15 +229,15 @@ export default function LanyardIDCard({ onResetRegistration }) {
                 <span className="logo-bracket">]</span>
               </div>
 
-              {/* Event Meta info */}
+              {/* Event Meta Info */}
               <div className="badge-event-meta">
-                <span className="meta-line bold">OCT 7th, 26</span>
-                <span className="meta-line">6 PM Onwards</span>
+                <span className="meta-line bold">OCT 7TH, 26</span>
+                <span className="meta-line dim">6 PM ONWARDS</span>
                 <span className="meta-line dim">PLH - 101</span>
               </div>
             </div>
 
-            {/* Attendee Name (Editable) */}
+            {/* Dynamic Attendee Name */}
             <div className="badge-attendee-block">
               {isEditing ? (
                 <input
@@ -241,7 +248,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
                   onBlur={() => setIsEditing(false)}
                   onKeyDown={(e) => e.key === 'Enter' && setIsEditing(false)}
                   autoFocus
-                  maxLength={24}
+                  maxLength={26}
                 />
               ) : (
                 <div
@@ -249,12 +256,8 @@ export default function LanyardIDCard({ onResetRegistration }) {
                   onClick={() => setIsEditing(true)}
                   title="Click to edit name"
                 >
-                  <h1 className="attendee-first">
-                    {attendeeName.split(' ')[0] || 'STILL'}
-                  </h1>
-                  <h1 className="attendee-last">
-                    {attendeeName.split(' ').slice(1).join(' ') || 'ALIVE'}
-                  </h1>
+                  <h1 className="attendee-first">{firstName}</h1>
+                  <h1 className="attendee-last">{restName}</h1>
                 </div>
               )}
             </div>
@@ -271,19 +274,19 @@ export default function LanyardIDCard({ onResetRegistration }) {
 
             <div className="badge-bottom-footer">
               <div className="footer-location">
-                <span className="foot-bold">Alan Turing Club</span>
+                <span className="foot-bold">ALAN TURING CLUB</span>
                 <span className="foot-dim">Bennett University</span>
               </div>
 
-              {/* Infinity Symbol / Event Sigil */}
+              {/* Infinity Symbol Sigil */}
               <div className="footer-sigil">
                 <svg
-                  width="26"
-                  height="26"
+                  width="30"
+                  height="30"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="#000000"
-                  strokeWidth="2.8"
+                  strokeWidth="3.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
@@ -306,7 +309,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
                 <svg className="spinner-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <circle cx="12" cy="12" r="10" strokeDasharray="32" strokeLinecap="round" />
                 </svg>
-                <span>Generating HD Pass...</span>
+                <span>Generating Universal HD Pass...</span>
               </>
             ) : downloadSuccess ? (
               <>

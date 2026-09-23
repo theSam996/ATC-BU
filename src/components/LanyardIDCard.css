@@ -305,24 +305,26 @@
   overflow: visible;
 }
 
-/* ---- PHYSICAL ID BADGE CARD ---- */
+/* ---- PHYSICAL ID BADGE CARD (Universal Fixed Canvas) ---- */
 .id-badge-card {
   position: relative;
-  width: min(340px, 88vw);
-  height: min(520px, 134vw);
-  background: #0a0a0c;
-  border-radius: 20px;
+  width: 340px;
+  height: 530px;
+  max-width: 100%;
+  background: #09090b;
+  border-radius: 28px;
   overflow: hidden;
   box-shadow: 
-    0 25px 60px -10px rgba(0, 0, 0, 0.85),
-    0 0 35px rgba(255, 23, 68, 0.15),
+    0 30px 70px -12px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(255, 23, 68, 0.18),
     inset 0 1px 1px rgba(255, 255, 255, 0.25);
   margin-top: -12px;
   display: flex;
   flex-direction: column;
   transform-style: preserve-3d;
   will-change: transform;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  flex-shrink: 0;
 }
 
 /* Top Badge Punch Hole */
@@ -331,11 +333,11 @@
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 38px;
+  width: 42px;
   height: 9px;
   background: #000000;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   z-index: 12;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.9);
 }
@@ -343,7 +345,7 @@
 .slot-inner {
   width: 100%;
   height: 100%;
-  background: #000;
+  background: #000000;
   border-radius: 6px;
 }
 
@@ -353,61 +355,55 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.15) 0%,
-    rgba(255, 255, 255, 0.04) 35%,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.03) 35%,
     rgba(255, 255, 255, 0) 60%
   );
   pointer-events: none;
   z-index: 10;
 }
 
-/* ---- TOP HALF (Black Background) ---- */
+/* ---- TOP HALF (Black Section) ---- */
 .badge-top-half {
-  flex: 1.05;
+  height: 245px;
   background: #0d0d10;
-  padding: 1.8rem 1.4rem 1.2rem 1.4rem;
+  padding: 1.8rem 1.45rem 1.25rem 1.45rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   position: relative;
+  flex-shrink: 0;
 }
 
 .badge-top-row {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-top: 0.5rem;
+  margin-top: 0.35rem;
 }
 
 .badge-logo-mark {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1.18rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
   color: #ffffff;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  line-height: 1;
 }
 
 .logo-core {
   font-weight: 900;
-}
-
-.logo-diamond {
-  color: #ff1744;
-  font-size: 0.8rem;
-  margin: 0 2px;
-}
-
-.logo-loc {
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.02em;
 }
 
 .logo-bracket {
   color: #ff1744;
-  font-weight: 300;
+  font-weight: 800;
+  font-size: 1.3rem;
 }
 
 .badge-event-meta {
@@ -415,29 +411,33 @@
   flex-direction: column;
   align-items: flex-end;
   text-align: right;
-  gap: 1px;
+  gap: 1.5px;
+  line-height: 1.25;
 }
 
 .meta-line {
-  font-size: 0.65rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
   color: rgba(255, 255, 255, 0.7);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .meta-line.bold {
-  font-weight: 700;
+  font-weight: 800;
   color: #ffffff;
+  font-size: 0.72rem;
 }
 
 .meta-line.dim {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.55);
 }
 
-/* Attendee Name */
+/* Dynamic Attendee Name Block */
 .badge-attendee-block {
   margin-top: auto;
-  padding-bottom: 0.2rem;
+  padding-bottom: 0.1rem;
 }
 
 .badge-name-display {
@@ -448,62 +448,67 @@
 .attendee-last {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 900;
-  font-size: clamp(1.8rem, 7.5vw, 2.35rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: 2.35rem;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
   color: #ffffff;
   margin: 0;
   text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .badge-name-input {
   width: 100%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   border: 1.5px solid #ff1744;
-  border-radius: 6px;
+  border-radius: 8px;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
   font-weight: 900;
   font-size: 1.6rem;
-  padding: 0.3rem 0.5rem;
+  padding: 0.35rem 0.5rem;
   text-transform: uppercase;
   outline: none;
 }
 
-/* ---- BOTTOM HALF (Vivid Red Block) ---- */
+/* ---- BOTTOM HALF (Vivid Red Slogan Block) ---- */
 .badge-bottom-half {
-  flex: 1.15;
+  height: 285px;
   background: #ff1744;
-  padding: 1.3rem 1.4rem 1.3rem 1.4rem;
+  padding: 1.45rem 1.45rem 1.45rem 1.45rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   color: #000000;
   position: relative;
+  flex-shrink: 0;
 }
 
 .slogan-container {
   display: flex;
   flex-direction: column;
-  line-height: 0.96;
+  line-height: 0.93;
 }
 
 .slogan-line {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-weight: 900;
-  font-size: clamp(1.85rem, 7.8vw, 2.45rem);
+  font-size: 2.45rem;
   letter-spacing: -0.025em;
   color: #000000;
   text-transform: uppercase;
-  line-height: 0.94;
+  line-height: 0.93;
+  margin: 0;
 }
 
 .badge-bottom-footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 1rem;
+  margin-top: auto;
 }
 
 .footer-location {
@@ -513,22 +518,24 @@
 }
 
 .foot-bold {
-  font-size: 0.72rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
   font-weight: 800;
   color: #000000;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
 }
 
 .foot-dim {
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.75);
-  letter-spacing: 0.02em;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: #000000;
+  letter-spacing: 0.01em;
 }
 
 .footer-sigil {
-  opacity: 0.9;
+  opacity: 1;
   display: flex;
   align-items: center;
 }
@@ -558,27 +565,19 @@
     height: 34px;
   }
 
-  .id-badge-card {
-    width: 90vw;
-    max-width: 320px;
-    height: 480px;
-    border-radius: 16px;
-  }
-
-  .attendee-first,
-  .attendee-last {
-    font-size: 1.85rem;
-  }
-
-  .slogan-line {
-    font-size: 1.95rem;
-  }
-
-  .badge-top-half {
-    padding: 1.4rem 1.1rem 1rem 1.1rem;
-  }
-
-  .badge-bottom-half {
-    padding: 1.1rem 1.1rem 1.1rem 1.1rem;
+  /* Scale whole pass container proportionally on narrow screens without changing typography ratios */
+  .lanyard-container {
+    transform: scale(0.92);
+    transform-origin: top center;
+    margin-bottom: -40px;
   }
 }
+
+@media (max-width: 360px) {
+  .lanyard-container {
+    transform: scale(0.84);
+    transform-origin: top center;
+    margin-bottom: -70px;
+  }
+}
+
