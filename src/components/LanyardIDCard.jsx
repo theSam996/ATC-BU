@@ -4,7 +4,7 @@ import { toPng } from 'html-to-image';
 import './LanyardIDCard.css';
 
 export default function LanyardIDCard({ onResetRegistration }) {
-  const [attendeeName, setAttendeeName] = useState('SAMAR KUMAR');
+  const [attendeeName, setAttendeeName] = useState('Type Your Name');
   const [isEditing, setIsEditing] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
