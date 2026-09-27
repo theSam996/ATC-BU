@@ -227,7 +227,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
 
               {/* Event Meta Info */}
               <div className="badge-event-meta">
-                <span className="meta-line bold">OCT 7TH, 26</span>
+                <span className="meta-line bold">OCT 6TH, 26</span>
                 <span className="meta-line dim">6 PM ONWARDS</span>
                 <span className="meta-line dim">PLH - 101</span>
               </div>
