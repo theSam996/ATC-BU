@@ -108,6 +108,7 @@ export default function LanyardIDCard({ onResetRegistration }) {
               <span className="ribbon-dot">◆</span>
               <span className="ribbon-text">CODE & COKE</span>
               <span className="ribbon-dot">◆</span>
+              <span className="ribbon-dot">◆</span>
             </div>
           </div>
 
